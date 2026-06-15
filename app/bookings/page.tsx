@@ -1,53 +1,69 @@
-const bookings = [
-  {
-    id: 1,
-    hotel: "Hotel Paradise",
-    city: "Bangalore",
-    checkIn: "2026-06-10",
-    checkOut: "2026-06-12",
-  },
-  {
-    id: 2,
-    hotel: "Sea View Resort",
-    city: "Goa",
-    checkIn: "2026-07-01",
-    checkOut: "2026-07-03",
-  },
-];
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function BookingsPage() {
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/bookings"
+      );
+
+      setBookings(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="text-4xl font-bold mb-8">
         My Bookings
       </h1>
 
-      <div className="space-y-4">
-        {bookings.map((booking) => (
-          <div
-            key={booking.id}
-            className="border rounded-lg p-4 shadow"
-          >
-            <h2 className="text-xl font-semibold">
-              {booking.hotel}
-            </h2>
+      {bookings.length === 0 ? (
+        <div className="text-center">
+          No bookings found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {bookings.map((booking: any) => (
+            <div
+              key={booking._id}
+              className="border rounded-xl p-6 shadow"
+            >
+              <h2 className="text-2xl font-bold">
+                {booking.hotelId?.name}
+              </h2>
 
-            <p>{booking.city}</p>
+              <p className="mt-2">
+                👤 {booking.customerName}
+              </p>
 
-            <p>
-              Check In: {booking.checkIn}
-            </p>
+              <p>
+                📅 Check In:{" "}
+                {new Date(
+                  booking.checkIn
+                ).toLocaleDateString()}
+              </p>
 
-            <p>
-              Check Out: {booking.checkOut}
-            </p>
-
-            <button className="mt-3 bg-red-500 text-white px-4 py-2 rounded">
-              Cancel Booking
-            </button>
-          </div>
-        ))}
-      </div>
+              <p>
+                📅 Check Out:{" "}
+                {new Date(
+                  booking.checkOut
+                ).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

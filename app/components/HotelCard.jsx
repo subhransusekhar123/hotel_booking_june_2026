@@ -10,17 +10,17 @@ export default function HotelCard({ hotel }) {
       />
 
       <div className="p-4">
-        <h2 className="text-xl font-bold">{hotel.name}</h2>
+        <h2 className="text-xl font-bold text-black">{hotel.name}</h2>
 
         <p className="text-gray-500">{hotel.city}</p>
 
         <div className="flex justify-between mt-2">
-          <span>⭐ {hotel.rating}</span>
-          <span className="font-semibold">₹{hotel.price}</span>
+          <span className="text-black">⭐ {hotel.rating}</span>
+          <span className="font-semibold text-black">₹{hotel.price}</span>
         </div>
 
         <Link
-          href={`/hotel/${hotel.id}`}
+          href={`/hotel/${hotel._id}`}
           className="block mt-4 text-center bg-black text-white py-2 rounded-lg"
         >
           View Details
